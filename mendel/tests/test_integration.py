@@ -63,7 +63,7 @@ class IntegrationTests(TestCase):
 
         myservice_http_port = os.environ.get('STANTONK/FAT-CONTAINER_8080_TCP')
         url = 'http://127.0.0.1:%s/hello' % myservice_http_port
-        print url
+        print 'TESTING SERVICE IS ALIVE AT URL=%s' % url
 
         # give the java service a few seconds to come up
         status_code, content = 0, ''
@@ -72,9 +72,9 @@ class IntegrationTests(TestCase):
                 r = urllib2.urlopen(url)
                 content = r.read()
                 status_code = r.getcode()
-                # r = requests.get(url)
-                # status_code, content = r.status_code, r.content
+                print 'SERVICE RESPONDED: code=%s content=%s' % (status_code, content)
+                break
             except:
-                pass
+                print 'SERVICE NOT ALIVE YET...RETRYING'
             time.sleep(2)
         return status_code, content
