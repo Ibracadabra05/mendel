@@ -748,9 +748,12 @@ class Mendel(object):
 
         url = 'http://%s' % self._track_event_endpoint
 
-        r = requests.post(url, data)
-        if r.status_code != 200:
-            print red('Unable to track deployment event to the external API (HTTP %s)' % r.status_code)
+        try:
+            r = requests.post(url, data)
+            if r.status_code != 200:
+                print red('Unable to track deployment event to the external API (HTTP %s)' % r.status_code)
+        except requests.exceptions.ConnectionError as e:
+            print red('Unable to track deployment event to the external API (Exception %s)' % e)
 
     def _track_event_slack(self, event):
         """
